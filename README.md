@@ -1,8 +1,8 @@
-# Learning GRPC
+# Learning gRPC
 
 [![Build Status](https://travis-ci.org/Manuhmutua/learning-grpc.svg?branch=master)](https://travis-ci.org/Manuhmutua/learning-grpc)
 
-This is a project that I created to learn gRPC.
+Learning gRPC.
 
 # What's in it!
 
