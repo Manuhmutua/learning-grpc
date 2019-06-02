@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"gitlab.com/pantomath-io/demo-grpc/api"
+	"github.com/Manuhmutua/learning-grpc/api"
 	"google.golang.org/grpc"
 )
 
