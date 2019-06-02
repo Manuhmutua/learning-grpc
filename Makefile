@@ -1,5 +1,5 @@
-SERVER_OUT := "server.bin"
-CLIENT_OUT := "client.bin"
+SERVER_OUT := "bin/server"
+CLIENT_OUT := "bin/client"
 API_OUT := "api/api.pb.go"
 PKG := "github.com/Manuhmutua/learning-grpc"
 
@@ -27,10 +27,10 @@ dep: ## Get the dependencies
 	@go get -v -d ./...
 
 build_server: dep api ## Build the binary file for server
-	@go build -v -o $(SERVER_OUT) $(SERVER_PKG_BUILD)/main.go
+	@go build -i -v -o $(SERVER_OUT) $(SERVER_PKG_BUILD)/main.go
 
 build_client: dep api ## Build the binary file for client
-	@go build -v -o $(CLIENT_OUT) $(CLIENT_PKG_BUILD)/main.go
+	@go build -i -v -o $(CLIENT_OUT) $(CLIENT_PKG_BUILD)/main.go
 
 clean: ## Remove previous builds
 	@rm $(SERVER_OUT) $(CLIENT_OUT) $(API_OUT)
