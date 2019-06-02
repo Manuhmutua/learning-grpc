@@ -2,16 +2,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/Manuhmutua/learning-grpc/api"
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/metadata"
 	"log"
 	"net"
 	"strings"
+
+	"golang.org/x/net/context"
+
+	"github.com/Manuhmutua/learning-grpc/api"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
 )
 
+// private type for Context keys
 type contextKey int
 
 const (
