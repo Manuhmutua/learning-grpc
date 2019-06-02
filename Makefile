@@ -11,7 +11,7 @@ CLIENT_PKG_BUILD := "client"
 
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 
-.PHONY: all api build_server build_client
+.PHONY: all api build_server build_client generate_ssl
 
 all: build_server build_client
 

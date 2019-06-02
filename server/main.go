@@ -2,17 +2,61 @@ package main
 
 import (
 	"fmt"
+	"github.com/Manuhmutua/learning-grpc/api"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
 	"log"
 	"net"
-
-	"github.com/Manuhmutua/learning-grpc/api"
-	"google.golang.org/grpc"
+	"strings"
 )
+
+type contextKey int
+
+const (
+	clientIDKey contextKey = iota
+)
+
+// authenticateAgent check the client credentials
+func authenticateClient(ctx context.Context, s *api.Server) (string, error) {
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		clientLogin := strings.Join(md["login"], "")
+		clientPassword := strings.Join(md["password"], "")
+
+		if clientLogin != "john" {
+			return "", fmt.Errorf("unknown user %s", clientLogin)
+		}
+		if clientPassword != "doe" {
+			return "", fmt.Errorf("bad password %s", clientPassword)
+		}
+
+		log.Printf("authenticated client: %s", clientLogin)
+		return "42", nil
+	}
+
+	return "", fmt.Errorf("missing credentials")
+}
+
+// unaryInterceptor calls authenticateClient with current context
+func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	s, ok := info.Server.(*api.Server)
+	if !ok {
+		return nil, fmt.Errorf("unable to cast server")
+	}
+	clientID, err := authenticateClient(ctx, s)
+	if err != nil {
+		return nil, err
+	}
+
+	ctx = context.WithValue(ctx, clientIDKey, clientID)
+	return handler(ctx, req)
+}
 
 // main start a gRPC server and waits for connection
 func main() {
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", "localhost",9990))
+	// create a listener on TCP port 7777
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", "localhost", 7777))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -27,7 +71,8 @@ func main() {
 	}
 
 	// Create an array of gRPC options with the credentials
-	opts := []grpc.ServerOption{grpc.Creds(creds)}
+	opts := []grpc.ServerOption{grpc.Creds(creds),
+		grpc.UnaryInterceptor(unaryInterceptor)}
 
 	// create a gRPC server object
 	grpcServer := grpc.NewServer(opts...)
