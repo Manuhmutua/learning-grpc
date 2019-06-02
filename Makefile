@@ -35,5 +35,11 @@ build_client: dep api ## Build the binary file for client
 clean: ## Remove previous builds
 	@rm $(SERVER_OUT) $(CLIENT_OUT) $(API_OUT)
 
+generate_ssl: ## Generate SSL for secure connection
+	@openssl genrsa -out cert/server.key 2048 && \
+    openssl req -new -x509 -sha256 -key cert/server.key -out cert/server.crt -days 3650 && \
+    openssl req -new -sha256 -key cert/server.key -out cert/server.csr && \
+    openssl x509 -req -sha256 -in cert/server.csr -signkey cert/server.key -out cert/server.crt -days 3650
+
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
