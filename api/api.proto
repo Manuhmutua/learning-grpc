@@ -3,7 +3,6 @@ package api;
 
 import "google/api/annotations.proto";
 
-
 message PingMessage {
     string greeting = 1;
 }
@@ -11,8 +10,9 @@ message PingMessage {
 service Ping {
     rpc SayHello (PingMessage) returns (PingMessage) {
         option (google.api.http) = {
-      post: "/1/ping"
-      body: "*"
+            post: "/1/ping"
+            body: "*"
     };
     }
 }
+
