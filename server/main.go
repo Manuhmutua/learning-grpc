@@ -105,19 +105,19 @@ func startRESTServer(address, grpcAddress, certFile string) error {
 
 	mux := runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(credMatcher))
 
-	creds, err := credentials.NewClientTLSFromFile(certFile, "")
-	if err != nil {
-		return fmt.Errorf("could not load TLS certificate: %s", err)
-	}
+	//creds, err := credentials.NewClientTLSFromFile(certFile, "")
+	//if err != nil {
+	//	return fmt.Errorf("could not load TLS certificate: %s", err)
+	//}
 
 	// Setup the client gRPC options
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(creds)}
+	//opts := []grpc.DialOption{grpc.WithTransportCredentials(creds)}
 
 	// Register ping
-	err = api.RegisterPingHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
-	if err != nil {
-		return fmt.Errorf("could not register service Ping: %s", err)
-	}
+	//err = api.RegisterPingHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
+	//if err != nil {
+	//	return fmt.Errorf("could not register service Ping: %s", err)
+	//}
 
 	log.Printf("starting HTTP/1.1 REST server on %s", address)
 	http.ListenAndServe(address, mux)
