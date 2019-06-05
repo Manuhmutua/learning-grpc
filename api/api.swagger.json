@@ -14,7 +14,34 @@
   "produces": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/1/ping": {
+      "post": {
+        "operationId": "SayHello",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiPingMessage"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiPingMessage"
+            }
+          }
+        ],
+        "tags": [
+          "Ping"
+        ]
+      }
+    }
+  },
   "definitions": {
     "apiPingMessage": {
       "type": "object",
