@@ -1,4 +1,4 @@
 language: go
 
 script:
-  - echo "All is well!"
+  - make all
